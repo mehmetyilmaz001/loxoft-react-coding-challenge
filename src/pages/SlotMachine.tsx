@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import Wheel from "../components/Wheel/Wheel";
+import { AUTO_START_TIMEOUT, AUTO_STOP_TIMEOUT, WHEEL_INTERVAL } from "../consts/Machine";
 import { getRandomNumberBetween } from "../helpers/Common";
 import { calcResult, generateRandomAssetList } from "../helpers/Wheel";
 import {
@@ -51,7 +52,7 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
           getRandomNumberBetween(0, secondList.length - 1)
         );
         setThirdSelectedIndex(getRandomNumberBetween(0, thirdList.length - 1));
-      }, 50);
+      }, WHEEL_INTERVAL);
 
       elapsedTimeInterval.current = setInterval(() => {
         setElapsedTime((_elapsedTime) => _elapsedTime + 1);
@@ -77,17 +78,17 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
 
   // Auto stop after 10 seconds
   useEffect(() => {
-    if (elapsedTime === 10) {
+    if (elapsedTime === AUTO_STOP_TIMEOUT) {
       _onStop();
     }
   }, [elapsedTime, _onStop]);
 
-  // Schedule auto start after 10 seconds
+  // Schedule auto start after 5 seconds
   useEffect(() => {
     console.log("AUTO START SCHEDULED");
     autoStartInterval.current = setTimeout(() => {
       _onStart();
-    }, 10 * 1000);
+    }, AUTO_START_TIMEOUT);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

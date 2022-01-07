@@ -13,3 +13,6 @@ import Asset from '../types/Asset';
 
 
 export const WHEEL_SIZE = 3;
+export const WHEEL_INTERVAL = 50;
+export const AUTO_START_TIMEOUT = 5 * 1000;
+export const AUTO_STOP_TIMEOUT = 10; // Seconds
