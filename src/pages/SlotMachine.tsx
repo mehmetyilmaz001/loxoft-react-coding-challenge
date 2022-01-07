@@ -6,10 +6,11 @@ import {
   useState,
 } from "react";
 import Wheel from "../components/Wheel/Wheel";
-import { getRandomNumberBetween } from "../helpers/common";
-import { generateRandomAssetList } from "../helpers/wheel";
+import { getRandomNumberBetween } from "../helpers/Common";
+import { calcResult, generateRandomAssetList } from "../helpers/Wheel";
 import {
   ButtonsContainer,
+  InfoContainer,
   MachineContainer,
   WheelContainer,
 } from "./SlotMachine.styled";
@@ -21,10 +22,9 @@ const secondList = generateRandomAssetList();
 const thirdList = generateRandomAssetList();
 
 const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
-  console.log("re render");
-
   const engineInterval = useRef<any>(null);
   const elapsedTimeInterval = useRef<any>(null);
+  const autoStartInterval = useRef<any>(null);
   const spinTick = useRef<number>(0);
 
   const [firstSelectedIndex, setFirstSelectedIndex] = useState<number>(0);
@@ -32,6 +32,7 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
   const [thirdSelectedIndex, setThirdSelectedIndex] = useState<number>(0);
 
   const [elapsedTime, setElapsedTime] = useState<number>(0);
+  const [prize, setPrize] = useState<number | null>(null);
 
   let firstAsset = firstList[firstSelectedIndex];
   let secondAsset = secondList[secondSelectedIndex];
@@ -39,7 +40,9 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
 
   const _onStart = useCallback(() => {
     if (spinTick.current === 0) {
-      console.log("start called");
+      console.log("Start called");
+      setElapsedTime(0);
+      setPrize(null);
 
       engineInterval.current = setInterval(() => {
         spinTick.current = spinTick.current + 1;
@@ -52,92 +55,85 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
       }, 50);
 
       elapsedTimeInterval.current = setInterval(() => {
-        setElapsedTime(_elapsedTime => _elapsedTime + 1);
+        setElapsedTime((_elapsedTime) => _elapsedTime + 1);
       }, 1000);
     }
   }, []);
 
-
-
-  const _calcResult = useCallback(() => {
-    if(firstAsset && secondAsset && thirdAsset){
-        const resultArray = [firstAsset, secondAsset, thirdAsset];
-
-        console.log("_calcResult", resultArray);
-        
-        const isAllAssetsSame = resultArray.every(asset => asset === resultArray[0]);
-        
-        const hasTwoNonConsecutiveAssets = firstAsset.name === thirdAsset.name;
-        
-        const hasTwoConsecutiveAssets = resultArray.some((asset, index) => {
-              return index + 1 <= resultArray.length - 1 ? asset.name === resultArray[index + 1].name : false;
-        });
-
-        if(isAllAssetsSame){
-            return 100;
-        }else if(hasTwoConsecutiveAssets){
-            return 20;
-        }else if(hasTwoNonConsecutiveAssets){
-              return 10;
-        }else{
-            return 0;
-        }
-    }
-} , [firstAsset, secondAsset, thirdAsset]);
-
   const _onStop = useCallback(() => {
+    console.log("Stop called");
+
     clearInterval(engineInterval.current);
+    clearInterval(elapsedTimeInterval.current);
+    clearTimeout(autoStartInterval.current);
+
     engineInterval.current = null;
-    clearInterval(elapsedTimeInterval.current); 
     spinTick.current = 0;
-    setElapsedTime(0);
 
-    // Calculate the results 
-    // Two non-consecutive asset: 10
-    // Two consecutive asset: 20
-    // Same asset in all wheels: 100 dollars
+    const _prize = calcResult(firstAsset, secondAsset, thirdAsset);
+    setPrize(_prize);
 
-    console.log("stop called result ==> ", _calcResult());
+    //eslint-disable-next-line
+  }, [firstAsset, secondAsset, thirdAsset]);
 
-  }, [_calcResult]);
-
-
-
+  // Auto stop after 10 seconds
   useEffect(() => {
-      if(elapsedTime === 10){
-            _onStop();
-      }
+    if (elapsedTime === 10) {
+      _onStop();
+    }
   }, [elapsedTime, _onStop]);
 
+  // Schedule auto start after 10 seconds
   useEffect(() => {
-    console.log("auto start");
-    //TODO: Check wheter stop button is clicked
-    setTimeout(() => {
+    console.log("AUTO START SCHEDULED");
+    autoStartInterval.current = setTimeout(() => {
       _onStart();
     }, 10 * 1000);
-    return () => {
-        // _onStop();
-    };
   }, [_onStart]);
 
   return (
-    <MachineContainer className="machine">
-      <WheelContainer>
-        <Wheel src={firstAsset.src} />
-        <Wheel src={secondAsset.src} />
-        <Wheel src={thirdAsset.src} />
-      </WheelContainer>
-      {spinTick.current} <br />
-      {elapsedTime}
-      <ButtonsContainer>
-        <button onClick={_onStart} className="primary">
-          START
-        </button>
-        <button onClick={_onStop} className="danger">
-          STOP
-        </button>
-      </ButtonsContainer>
-    </MachineContainer>
+    <>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "20px",
+        }}
+      >
+        <WheelContainer>
+          <Wheel src={firstAsset.src} />
+          <Wheel src={secondAsset.src} />
+          <Wheel src={thirdAsset.src} />
+        </WheelContainer>
+        <ButtonsContainer>
+          <button onClick={_onStart} className="primary">
+            START
+          </button>
+          <button onClick={_onStop} className="danger">
+            STOP
+          </button>
+        </ButtonsContainer>
+
+        <InfoContainer>
+          <b>Elapsed Time:</b> {elapsedTime} <br />
+          <b>Is Playing:</b> {spinTick.current > 0 ? "Yes" : "No"} <br />
+        </InfoContainer>
+        {prize !== null && (
+          <InfoContainer>
+            {prize === 0 ? (
+              <span style={{color: "red"}}>You lost!</span>
+            ) : (
+              <span
+                style={{ fontSize: prize === 0 || prize === 10 ? 18 : prize! }}
+              >
+                Prize: {prize} USD
+              </span>
+            )}
+          </InfoContainer>
+        )}
+      </div>
+    </>
   );
 };
 
