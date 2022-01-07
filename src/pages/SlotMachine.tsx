@@ -11,7 +11,6 @@ import { calcResult, generateRandomAssetList } from "../helpers/Wheel";
 import {
   ButtonsContainer,
   InfoContainer,
-  MachineContainer,
   WheelContainer,
 } from "./SlotMachine.styled";
 
@@ -102,9 +101,9 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
         }}
       >
         <WheelContainer>
-          <Wheel src={firstAsset.src} />
-          <Wheel src={secondAsset.src} />
-          <Wheel src={thirdAsset.src} />
+          <Wheel src={firstAsset.src} name={firstAsset.name}  />
+          <Wheel src={secondAsset.src} name={secondAsset.name} />
+          <Wheel src={thirdAsset.src} name={thirdAsset.name}/>
         </WheelContainer>
         <ButtonsContainer>
           <button onClick={_onStart} className="primary">

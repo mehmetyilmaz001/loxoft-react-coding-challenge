@@ -1,29 +1,27 @@
+
+
 import { FunctionComponent } from "react";
-import styled from "styled-components";
+import WheelContainer from "./Wheel.styled";
 
 interface WheelProps {
-    src: string
+    /**
+     * The image to display in the wheel
+     */
+  src: string;
+  name: string;
 }
 
-const WheelContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
-    border: solid 1px #c3c3c3;
-    border-radius: 20px;
 
-    img{
-        height: 70px;
-    }
-`
- 
-const Wheel: FunctionComponent<WheelProps> = ({src}) => {
-  return (  
-            <WheelContainer className="wheel" >
-                <img src={src} alt={"Wheel"} />
-            </WheelContainer>   
-    );
-}
- 
+/**
+ * 
+ * This component is used to display the wheel
+ */
+const Wheel: FunctionComponent<WheelProps> = ({ src, name }) => {
+  return (
+    <WheelContainer className="wheel" title={name}>
+      <img src={src} alt={"Wheel"} />
+    </WheelContainer>
+  );
+};
+
 export default Wheel;
