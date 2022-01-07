@@ -18,8 +18,17 @@ function App() {
       </Header>
 
       <SlotMachine />
+
+
+      <footer style={{marginTop: 50}}>
+        <div style={{fontSize: 11, textAlign: 'center'}}>
+        The slot machine will spin autamatically after 10 seconds if you don't start it manually. 
+        Spin will automatically stop after 10 seconds if you don't stop it manually.
+        </div>
+      </footer>
     </div>
   );
 }
+
 
 export default App;
