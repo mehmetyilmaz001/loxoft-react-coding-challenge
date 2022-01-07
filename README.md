@@ -2,7 +2,7 @@
 
 This is a ReactJS coding challenge project called Slot Machibe for Luxoft job apply.
 
-## Live demo: [https://61cee898add95e3d6d46c320--modest-swirles-c8d3ff.netlify.app/](https://61cee898add95e3d6d46c320--modest-swirles-c8d3ff.netlify.app/)
+## Live demo: [https://61d8be80f1e4d100084ab884--peaceful-shaw-72b0ed.netlify.app/](https://61d8be80f1e4d100084ab884--peaceful-shaw-72b0ed.netlify.app/)
 
 ## Preview
 
