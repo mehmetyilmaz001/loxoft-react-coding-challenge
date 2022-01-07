@@ -5,10 +5,10 @@ import monkey from '../assets/monkey.svg';
 import Asset from '../types/Asset';
 
  export const ASSET_LIST: Asset[] = [
-    {id: 1, name: 'Strawberry', asset: strawberry },
-    {id: 2, name: 'Banana', asset: orange },
-    {id: 3, name: 'Orange', asset: banana },
-    {id: 4, name: 'Monkey', asset: monkey },
+    {id: 1, name: 'Strawberry', src: strawberry},
+    {id: 2, name: 'Banana', src: orange },
+    {id: 3, name: 'Orange', src: banana },
+    {id: 4, name: 'Monkey', src: monkey },
 ]
 
 

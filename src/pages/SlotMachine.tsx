@@ -33,6 +33,10 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
 
   const [elapsedTime, setElapsedTime] = useState<number>(0);
 
+  let firstAsset = firstList[firstSelectedIndex];
+  let secondAsset = secondList[secondSelectedIndex];
+  let thirdAsset = thirdList[thirdSelectedIndex];
+
   const _onStart = useCallback(() => {
     if (spinTick.current === 0) {
       console.log("start called");
@@ -53,13 +57,51 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
     }
   }, []);
 
+
+
+  const _calcResult = useCallback(() => {
+    if(firstAsset && secondAsset && thirdAsset){
+        const resultArray = [firstAsset, secondAsset, thirdAsset];
+
+        console.log("_calcResult", resultArray);
+        
+        const isAllAssetsSame = resultArray.every(asset => asset === resultArray[0]);
+        
+        const hasTwoNonConsecutiveAssets = firstAsset.name === thirdAsset.name;
+        
+        const hasTwoConsecutiveAssets = resultArray.some((asset, index) => {
+              return index + 1 <= resultArray.length - 1 ? asset.name === resultArray[index + 1].name : false;
+        });
+
+        if(isAllAssetsSame){
+            return 100;
+        }else if(hasTwoConsecutiveAssets){
+            return 20;
+        }else if(hasTwoNonConsecutiveAssets){
+              return 10;
+        }else{
+            return 0;
+        }
+    }
+} , [firstAsset, secondAsset, thirdAsset]);
+
   const _onStop = useCallback(() => {
     clearInterval(engineInterval.current);
     engineInterval.current = null;
     clearInterval(elapsedTimeInterval.current); 
     spinTick.current = 0;
     setElapsedTime(0);
-  }, []);
+
+    // Calculate the results 
+    // Two non-consecutive asset: 10
+    // Two consecutive asset: 20
+    // Same asset in all wheels: 100 dollars
+
+    console.log("stop called result ==> ", _calcResult());
+
+  }, [_calcResult]);
+
+
 
   useEffect(() => {
       if(elapsedTime === 10){
@@ -69,21 +111,21 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
 
   useEffect(() => {
     console.log("auto start");
-    // Check wheter stop button is clicked
+    //TODO: Check wheter stop button is clicked
     setTimeout(() => {
       _onStart();
     }, 10 * 1000);
     return () => {
-        _onStop();
+        // _onStop();
     };
-  }, [_onStart, _onStop]);
+  }, [_onStart]);
 
   return (
     <MachineContainer className="machine">
       <WheelContainer>
-        <Wheel src={firstList[firstSelectedIndex].asset} />
-        <Wheel src={secondList[secondSelectedIndex].asset} />
-        <Wheel src={thirdList[thirdSelectedIndex].asset} />
+        <Wheel src={firstAsset.src} />
+        <Wheel src={secondAsset.src} />
+        <Wheel src={thirdAsset.src} />
       </WheelContainer>
       {spinTick.current} <br />
       {elapsedTime}
