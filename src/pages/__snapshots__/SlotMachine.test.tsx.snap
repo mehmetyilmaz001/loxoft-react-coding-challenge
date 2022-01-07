@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot of the base state 1`] = `
+<DocumentFragment>
+  <div
+    style="display: flex; flex-direction: column; align-items: center; gap: 20px;"
+  >
+    <div
+      class="sc-dkPtRN kKgmJV"
+    >
+      <div
+        class="sc-bdvvtL cIQRjS wheel"
+        title="Monkey"
+      >
+        <img
+          alt="Wheel"
+          src="monkey.svg"
+        />
+      </div>
+      <div
+        class="sc-bdvvtL cIQRjS wheel"
+        title="Banana"
+      >
+        <img
+          alt="Wheel"
+          src="banana.svg"
+        />
+      </div>
+      <div
+        class="sc-bdvvtL cIQRjS wheel"
+        title="Strawberry"
+      >
+        <img
+          alt="Wheel"
+          src="strawberry.svg"
+        />
+      </div>
+    </div>
+    <div
+      class="sc-hKwDye kJZMWF"
+    >
+      <button
+        class="primary"
+        data-testid="StartBtn"
+      >
+        START
+      </button>
+      <button
+        class="danger"
+        data-testid="StopBtn"
+        disabled=""
+      >
+        STOP
+      </button>
+    </div>
+    <div
+      class="sc-eCImPb jHGFuf"
+    >
+      <b>
+        Elapsed Time:
+      </b>
+       
+      <span
+        data-testid="ElapsedTimeSpn"
+      >
+        0
+      </span>
+       
+      <br />
+      <b>
+        Is Playing:
+      </b>
+       
+      <span
+        data-testid="IsPlayingSpn"
+      >
+         No 
+      </span>
+      <br />
+    </div>
+  </div>
+</DocumentFragment>
+`;

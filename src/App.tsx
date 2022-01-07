@@ -23,7 +23,8 @@ function App() {
       <footer style={{marginTop: 50}}>
         <div style={{fontSize: 11, textAlign: 'center'}}>
         The slot machine will spin autamatically after 10 seconds if you don't start it manually. 
-        Spin will automatically stop after 10 seconds if you don't stop it manually.
+        Spin will automatically stop after 10 seconds if you don't stop it manually. <br/>
+        <a href="https://github.com/mehmetyilmaz001/luxoft-react-coding-challenge" target="_blank" rel="noreferrer"  >https://github.com/mehmetyilmaz001/luxoft-react-coding-challenge</a>
         </div>
       </footer>
     </div>

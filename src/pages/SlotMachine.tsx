@@ -24,7 +24,7 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
   const engineInterval = useRef<any>(null);
   const elapsedTimeInterval = useRef<any>(null);
   const autoStartInterval = useRef<any>(null);
-  const spinTick = useRef<number>(0);
+  const [spinTick, setSpinTick] = useState<number>(0);
 
   const [firstSelectedIndex, setFirstSelectedIndex] = useState<number>(0);
   const [secondSelectedIndex, setSecondSelectedIndex] = useState<number>(0);
@@ -38,13 +38,13 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
   let thirdAsset = thirdList[thirdSelectedIndex];
 
   const _onStart = useCallback(() => {
-    if (spinTick.current === 0) {
+    if (spinTick === 0) {
       console.log("Start called");
       setElapsedTime(0);
       setPrize(null);
 
       engineInterval.current = setInterval(() => {
-        spinTick.current = spinTick.current + 1;
+        setSpinTick((prev) => prev + 1);
 
         setFirstSelectedIndex(getRandomNumberBetween(0, firstList.length - 1));
         setSecondSelectedIndex(
@@ -57,7 +57,7 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
         setElapsedTime((_elapsedTime) => _elapsedTime + 1);
       }, 1000);
     }
-  }, []);
+  }, [spinTick]);
 
   const _onStop = useCallback(() => {
     console.log("Stop called");
@@ -67,7 +67,7 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
     clearTimeout(autoStartInterval.current);
 
     engineInterval.current = null;
-    spinTick.current = 0;
+    setSpinTick(0)
 
     const _prize = calcResult(firstAsset, secondAsset, thirdAsset);
     setPrize(_prize);
@@ -88,7 +88,11 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
     autoStartInterval.current = setTimeout(() => {
       _onStart();
     }, 10 * 1000);
-  }, [_onStart]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
+  const isSpining = spinTick > 0;
 
   return (
     <>
@@ -106,17 +110,17 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
           <Wheel src={thirdAsset.src} name={thirdAsset.name}/>
         </WheelContainer>
         <ButtonsContainer>
-          <button onClick={_onStart} className="primary">
+          <button data-testid='StartBtn' onClick={_onStart} className="primary" disabled={isSpining}>
             START
           </button>
-          <button onClick={_onStop} className="danger">
+          <button data-testid='StopBtn' onClick={_onStop} className="danger" disabled={!isSpining}>
             STOP
           </button>
         </ButtonsContainer>
 
         <InfoContainer>
-          <b>Elapsed Time:</b> {elapsedTime} <br />
-          <b>Is Playing:</b> {spinTick.current > 0 ? "Yes" : "No"} <br />
+          <b>Elapsed Time:</b> <span data-testid='ElapsedTimeSpn'>{elapsedTime}</span> <br />
+          <b>Is Playing:</b> <span data-testid='IsPlayingSpn'> {isSpining ? "Yes" : "No"} </span><br />
         </InfoContainer>
         {prize !== null && (
           <InfoContainer>
