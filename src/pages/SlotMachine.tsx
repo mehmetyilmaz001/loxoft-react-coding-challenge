@@ -7,8 +7,8 @@ import {
 } from "react";
 import Wheel from "../components/Wheel/Wheel";
 import { AUTO_START_TIMEOUT, AUTO_STOP_TIMEOUT, WHEEL_INTERVAL } from "../consts/Machine";
-import { getRandomNumberBetween } from "../helpers/Common";
-import { calcResult, generateRandomAssetList } from "../helpers/Wheel";
+import { getRandomNumberBetween } from "../helpers/CommonHelper";
+import { calcResult, generateRandomAssetList } from "../helpers/WheelHelper";
 import {
   ButtonsContainer,
   InfoContainer,

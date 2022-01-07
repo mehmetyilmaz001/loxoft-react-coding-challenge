@@ -1,5 +1,5 @@
 import Asset from '../types/Asset';
-import {calcResult} from './Wheel';
+import {calcResult} from './WheelHelper';
 
 
 describe('calculate result function', () => {

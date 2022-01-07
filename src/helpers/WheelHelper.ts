@@ -1,5 +1,5 @@
 import { ASSET_LIST } from "../consts/Machine";
-import { randomlyMoveItems } from "./Common";
+import { randomlyMoveItems } from "./CommonHelper";
 import Asset from "../types/Asset";
 
 export const generateRandomAssetList = (): Asset[] => {
