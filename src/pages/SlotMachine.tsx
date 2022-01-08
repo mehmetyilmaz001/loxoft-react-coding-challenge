@@ -41,6 +41,7 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
   const _onStart = useCallback(() => {
     if (spinTick === 0) {
       console.log("Start called");
+      clearTimeout(autoStartInterval.current);
       setElapsedTime(0);
       setPrize(null);
 
