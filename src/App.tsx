@@ -9,6 +9,8 @@ const Header = styled.header`
   background-color: #282c34;
   height: 50px;
   color: white;
+  padding: 10px;
+  text-align: center;
 `
 
 function App() {

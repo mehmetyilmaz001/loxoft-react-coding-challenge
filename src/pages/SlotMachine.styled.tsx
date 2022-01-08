@@ -14,6 +14,10 @@ const WheelContainer = styled.div`
     width: 500px;
     margin: auto;
 
+    @media screen and (max-width: 600px) {
+        width: 90%;
+    }
+
     .wheel {
         flex: 1;
     }

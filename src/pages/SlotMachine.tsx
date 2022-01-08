@@ -129,7 +129,7 @@ const SlotMachine: FunctionComponent<SlotMachineProps> = () => {
               <span style={{color: "red"}}>You lost!</span>
             ) : (
               <span
-                style={{ fontSize: prize === 0 || prize === 10 ? 18 : prize! }}
+                style={{ fontSize: prize === 0 || prize === 10 ? 18 : prize - 60! }}
               >
                 Prize: {prize} USD
               </span>
